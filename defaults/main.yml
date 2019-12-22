@@ -1,0 +1,10 @@
+# Standards: 0.1
+---
+# @var owncloud_user:description: User to run user-specific commands
+# @var owncloud_user:value: owncloud_user | default(homebrew_user) | default(ansible_user_id)
+# owncloud_user:
+
+# @var owncloud_started:description: Start in background after install
+owncloud_started: True
+
+...

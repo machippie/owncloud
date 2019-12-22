@@ -1,0 +1,16 @@
+# Standards: 0.1
+---
+- name: Kill owncloud
+  command: killall ownCloud
+  register: owncloud_kill
+  failed_when: owncloud_kill.rc != 0 and "No matching processes belonging to you were found" not in owncloud_kill.stderr
+  become: "{{ (owncloud_user != ansible_user_id) | bool }}"
+  become_user: "{{ owncloud_user }}"
+
+- name: Start owncloud
+  when: owncloud_started
+  command: open -j /Applications/ownCloud.app
+  become: "{{ (owncloud_user != ansible_user_id) | bool }}"
+  become_user: "{{ owncloud_user }}"
+
+...
