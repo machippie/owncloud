@@ -6,8 +6,8 @@
   tags:
     - owncloud
 
-- become: "{{ (riot_user != ansible_user_id) | bool }}"
-  become_user: "{{ riot_user }}"
+- become: "{{ (owncloud_user != ansible_user_id) | bool }}"
+  become_user: "{{ owncloud_user }}"
   block:
     - name: Install required package
       ignore_errors: True
