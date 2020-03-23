@@ -6,33 +6,25 @@
   tags:
     - owncloud
 
-- name: Install required package
-  ignore_errors: True
-  homebrew_cask:
-    name: owncloud
-    greedy: True
-    options: appdir=/Applications
-    accept_external_apps: False
-    state: upgraded
-  become: "{{ (owncloud_user != ansible_user_id) | bool }}"
-  become_user: "{{ owncloud_user }}"
-  tags:
-    - owncloud
+- become: "{{ (riot_user != ansible_user_id) | bool }}"
+  become_user: "{{ riot_user }}"
+  block:
+    - name: Install required package
+      ignore_errors: True
+      homebrew_cask:
+        name: owncloud
+        greedy: True
+        options: appdir=/Applications
+        accept_external_apps: False
+        state: upgraded
+      tags:
+        - owncloud
 
 - name: Remove quarantine flag
   register: owncloud_quarantine
   failed_when: owncloud_quarantine.rc != 0 and "No such xattr" not in owncloud_quarantine.stderr
   changed_when: owncloud_quarantine.rc == 0
   command: xattr -d com.apple.quarantine /Applications/ownCloud.app
-  tags:
-    - owncloud
-
-- name: Start background application
-  when: owncloud_started
-  changed_when: False
-  command: open -j /Applications/ownCloud.app
-  become: "{{ (owncloud_user != ansible_user_id) | bool }}"
-  become_user: "{{ owncloud_user }}"
   tags:
     - owncloud
 
